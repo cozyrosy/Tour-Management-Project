@@ -4,11 +4,14 @@ from django.contrib import auth
 from django.contrib import messages
 from.models import ClientDetails
 from django.contrib.auth.decorators import login_required
+from Manager.models import Tour
+
 
 # Create your views here.
 
 def home(request):
-    return render(request,'user/base.html')
+    tours = Tour.objects.all()  # Fetch all tours
+    return render(request,'user/home.html', {'tours': tours})
 
 def Register(request):
     if request.method=='POST':
