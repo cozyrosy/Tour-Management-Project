@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'manager:home' %}">Adventure Manager</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'manager:home' %}" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'manager:booking_list' %}" class="nav-link">View All Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'manager:tour_detail' pk=1 %}" class="nav-link">View Tour Details</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'manager:create_booking' tour_id=1 %}" class="nav-link">Create Booking</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'manager:create_review' tour_id=1 %}" class="nav-link">Add Review</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Success</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        {% block messages %}
+            <!-- Display any messages if available -->
+            <div class="alert alert-success mt-3" role="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endblock %}
+
+        <h2 class="text-center mt-5">Booking Confirmed!</h2>
+        <div class="text-center mt-4">
+            <p>Your booking has been successfully confirmed. Thank you for booking with us!</p>
+            <a href="{% url 'Tour:tour_list' %}" class="btn btn-primary">Back to Tours</a>
+        </div>
+
+        {% if user_bookings %}
+            <h3 class="mt-5">Your Bookings:</h3>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Booking Date</th>
+                        <th>Tour Title</th>
+                        <th>Number of People</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in user_bookings %}
+                        <tr>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.tour.title }}</td>
+                            <td>{{ booking.num_people }}</td>
+                            <td>{{ booking.total_price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You have no bookings yet.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

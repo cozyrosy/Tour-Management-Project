@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ tour.title }} - Adventure Tour{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Custom styling for a more modern look */
+        .tour-header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .tour-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tour-info {
+            background-color: #f8f9fa;
+            color: black;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .review-card {
+            border: none;
+            background-color: #f8f9fa;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Include Navbar -->
+    {% include 'manager/navbar.html' %}
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+
+        <!-- Tour Header -->
+        <div class="tour-header text-center mb-5">
+            <h3 >{{ tour.title }}</h3>
+        </div>
+
+        <!-- Tour Image and Details Section -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-4 col-md-6 text-center">
+                {% if tour.image %}
+                    <img src="{{ tour.image.url }}" alt="{{ tour.title }}" class="tour-image">
+                {% else %}
+                    <p class="text-muted">No image available for this tour.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="tour-info">
+                    <p><strong>Location:</strong> {{ tour.location }}</p>
+                    <p><strong>Adventure Type:</strong> {{ tour.adventure_type }}</p>
+                    <p><strong>Price:</strong> ${{ tour.price }}</p>
+                    <p><strong>Description:</strong> {{ tour.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-center gap-3 mb-5">
+            <a href="{% url 'manager:create_booking' tour.id %}" class="btn btn-primary btn-lg">Book Now</a>
+            <a href="{% url 'manager:create_review' tour.id %}" class="btn btn-outline-secondary btn-lg">Leave a Review</a>
+        </div>
+
+        <!-- Reviews Section -->
+        <h2 class="text-center mb-4">Reviews</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {% for review in reviews %}
+                    <div class="card review-card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.user.username }} - <span class="text-warning">{{ review.rating }} Stars</span></h5>
+                            <p class="card-text">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-muted">No reviews yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Footer -->
+    {% include 'manager/footer.html' %}
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

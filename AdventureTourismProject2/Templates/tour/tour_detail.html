@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">{{ tour.title }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ tour.image.url }}" class="img-fluid rounded" alt="{{ tour.title }}">
+        </div>
+        <div class="col-md-6">
+            <p><strong>Location:</strong> {{ tour.location }}</p>
+            <p><strong>Price:</strong> ${{ tour.price }}</p>
+            <p><strong>Start Date:</strong> {{ tour.start_date }}</p>
+            <p><strong>End Date:</strong> {{ tour.end_date }}</p>
+            <p><strong>Max Group Size:</strong> {{ tour.max_group_size }}</p>
+            <p><strong>Description:</strong> {{ tour.description }}</p>
+            <p><strong>Itinerary:</strong></p>
+            <ul>
+                {% for item in tour.itinerary.splitlines %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'Tour:create_booking' tour.id %}" class="btn btn-primary">Book Now</a>
+
+    </div>
+</div>
+
+</body>
+</html>
