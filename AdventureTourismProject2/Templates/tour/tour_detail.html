@@ -1,36 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="text-center">{{ tour.title }}</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ tour.image.url }}" class="img-fluid rounded" alt="{{ tour.title }}">
-        </div>
-        <div class="col-md-6">
-            <p><strong>Location:</strong> {{ tour.location }}</p>
-            <p><strong>Price:</strong> ${{ tour.price }}</p>
-            <p><strong>Start Date:</strong> {{ tour.start_date }}</p>
-            <p><strong>End Date:</strong> {{ tour.end_date }}</p>
-            <p><strong>Max Group Size:</strong> {{ tour.max_group_size }}</p>
-            <p><strong>Description:</strong> {{ tour.description }}</p>
-            <p><strong>Itinerary:</strong></p>
-            <ul>
-                {% for item in tour.itinerary.splitlines %}
-                <li>{{ item }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="text-center mt-4">
-        <a href="{% url 'Tour:create_booking' tour.id %}" class="btn btn-primary">Book Now</a>
+{% extends 'user/base.html' %}
+{% load static %}
 
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center align-items-center" >
+        <div class="card justify-content-center" style="width: 70%;">
+          <div class="card-body">
+              <img src="{{ tour.image.url }}" style="" class="card-img-top img-fluid rounded" alt="{{ tour.title }}">
+            <h1 class="card-title text-dark">{{ tour.title }}</h1>
+            <p class="card-text text-dark">
+                <p class="text-dark"><strong>Location:</strong> {{ tour.location }}</p>
+                <p class="text-dark"><strong>Price:</strong> ${{ tour.price }}</p>
+                <p class="text-dark"><strong>Start Date:</strong> {{ tour.start_date }}</p>
+                <p class="text-dark"><strong>End Date:</strong> {{ tour.end_date }}</p>
+                <p class="text-dark"><strong>Max Group Size:</strong> {{ tour.max_group_size }}</p>
+                <p class="text-dark"><strong>Description:</strong> {{ tour.description }}</p>
+                <p class="text-dark"><strong>Itinerary:</strong></p>
+                <ul>
+                    {% for item in tour.itinerary.splitlines %}
+                    <li class="text-dark">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            <a href="{% url 'Tour:create_booking' tour.id %}" class="btn btn-primary">Book Now</a>
+          </div>
+        </div>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}

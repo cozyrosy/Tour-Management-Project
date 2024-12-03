@@ -23,9 +23,9 @@
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'user:home' %}">Home</a>
                 </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'tours' %}active{% endif %}" href="{% url 'Tour:tour_list' %}">Tours</a>
-                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link {% if request.resolver_match.url_name == 'tours' %}active{% endif %}" href="{% url 'Tour:tour_list' %}">Tours</a>-->
+<!--                    </li>-->
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="#">Bookings</a>
                     </li>
@@ -50,29 +50,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Optional, can be overridden) -->
-    {% block hero %}
-    <div style="position: relative; width: 100%; height: auto;">
-        <img src="{% static 'images/bgd1.jpg' %}" alt="Background scenery" style="width: 1300px; height: 600px;">
-        <div style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3em; font-weight: 800; font-family: Arial, sans-serif; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); letter-spacing: 1px;">
-            Discover the World...!
-        </div>
-    </div>
+    {% block content %}
     {% endblock %}
-
-    <!-- Main Content -->
-    <div class="container mt-4">
-        {% block content %}
-            <div class="card" style="width: 18rem;">
-              <img src="..." class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-        {% endblock %}
-    </div>
 
 
 
