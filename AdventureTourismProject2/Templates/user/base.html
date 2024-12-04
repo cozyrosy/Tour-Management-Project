@@ -27,7 +27,7 @@
 <!--                        <a class="nav-link {% if request.resolver_match.url_name == 'tours' %}active{% endif %}" href="{% url 'Tour:tour_list' %}">Tours</a>-->
 <!--                    </li>-->
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="#">Bookings</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="{% url 'Tour:user_bookings' %}">Bookings</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="#">Blog</a>

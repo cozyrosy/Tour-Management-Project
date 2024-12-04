@@ -1,0 +1,36 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-dark mb-4 text-center"> Bookings </h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">SNo.</th>
+          <th scope="col">Tour Package</th>
+          <th scope="col">Booked On</th>
+          <th scope="col">Number of people</th>
+          <th scope="col">Price</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for booking in user_bookings%}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ booking.tour.title }}</td>
+          <td>{{ booking.date }}</td>
+          <td>{{ booking.num_people }}</td>
+          <td>{{ booking.total_price }}</td>
+          <td>{{ booking.status }}</td>
+          <td><a href="{% url 'Tour:tour_detail' booking.tour.id %}"><button type="button" class="btn btn-primary">View Detail</button></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -11,6 +11,7 @@ urlpatterns=[
     path('booking/create/', views.create_booking, name='user_booking_create'),
     path('create-booking/<int:tour_id>/', views.create_booking, name='create_booking'),
     path('booking_success/', views.booking_success, name='booking_success'),
+    path('user_bookings/', views.user_bookings, name='user_bookings'),
 
     #path('tour/<int:pk>/', views.user_tour_detail, name='tour_detail')
     #path('bookings/', views.user_booking_list, name='user_booking_list'),

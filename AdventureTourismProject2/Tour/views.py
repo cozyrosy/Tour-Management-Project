@@ -54,12 +54,6 @@ def create_booking(request, tour_id):
 
     return render(request, 'tour/create_booking.html', {'form': form, 'tour': tour})
 
-
-
-
-
-
-
 def booking_success(request):
     # Display a success message
     messages.success(request, 'Your booking was successful!')
@@ -69,3 +63,9 @@ def booking_success(request):
 
     # Pass the bookings to the template
     return render(request, 'tour/booking_success.html', {'user_bookings': user_bookings})
+
+def user_bookings(request):
+    # Function to list the bookings of a user.
+    user_bookings = UserBooking.objects.filter(user=request.user).order_by('date')
+
+    return render(request, 'tour/user_bookings.html', {'user_bookings': user_bookings})
