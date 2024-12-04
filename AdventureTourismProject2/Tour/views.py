@@ -36,8 +36,7 @@ def tour_detail(request, tour_id):
     tour = get_object_or_404(Tour, id=tour_id)
     return render(request, 'tour/tour_detail.html', {'tour': tour})
 
-
-
+@login_required
 def create_booking(request, tour_id):
     tour = get_object_or_404(Tour, pk=tour_id)
 
@@ -64,6 +63,7 @@ def booking_success(request):
     # Pass the bookings to the template
     return render(request, 'tour/booking_success.html', {'user_bookings': user_bookings})
 
+@login_required
 def user_bookings(request):
     # Function to list the bookings of a user.
     user_bookings = UserBooking.objects.filter(user=request.user).order_by('date')

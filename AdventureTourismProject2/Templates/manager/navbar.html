@@ -10,16 +10,19 @@
                     <a href="{% url 'manager:home' %}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'manager:booking_list' %}" class="nav-link">View All Bookings</a>
+                    <a href="{% url 'manager:booking_list' %}" class="nav-link">All Bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'manager:tour_detail' pk=1 %}" class="nav-link">View Tour Details</a>
+                    <a href="{% url 'manager:tour_detail' pk=1 %}" class="nav-link">Tours</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'manager:create_booking' tour_id=1 %}" class="nav-link">Create Booking</a>
+                    <a href="{% url 'manager:create_booking' tour_id=1 %}" class="nav-link">Book Tour</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'manager:create_review' tour_id=1 %}" class="nav-link">Add Review</a>
+                    <a href="{% url 'manager:create_review' tour_id=1 %}" class="nav-link">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'user:logout' %}" class="nav-link">Logout</a>
                 </li>
             </ul>
         </div>
