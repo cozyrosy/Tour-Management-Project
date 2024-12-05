@@ -6,7 +6,11 @@ app_name = 'Manager'
 urlpatterns = [
 
     path('', views.manager_home, name='home'),
+    path('tours/', views.tour_list, name='tour_list'),
     path('tours/<int:pk>/', views.tour_detail, name='tour_detail'),
+    path('create_tour/', views.create_tour, name='create_tour'),
+    path('edit_tour/<int:pk>/', views.edit_tour, name='edit_tour'),
+    path('delete_tour/<int:pk>/', views.delete_tour, name='delete_tour'),
     path('tours/<int:tour_id>/book/', views.create_booking, name='create_booking'),
     path('bookings/', views.BookingListView.as_view(), name='booking_list'),
     path('tours/<int:tour_id>/review/', views.create_review, name='create_review'),

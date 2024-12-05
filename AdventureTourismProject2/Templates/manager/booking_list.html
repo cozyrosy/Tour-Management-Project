@@ -4,25 +4,35 @@
 {% block content %}
 
 <div class="container my-5">
-    <h1 class="text-center mb-4">Your Bookings</h1>
+    <h1 class="text-center mb-4">All Bookings</h1>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered align-middle">
             <thead class="table-dark">
                 <tr>
+                    <th scope="col">SNo.</th>
                     <th scope="col">Tour</th>
+                    <th scope="col">User</th>
                     <th scope="col">Date</th>
                     <th scope="col">Number of People</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Total Price</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 {% for booking in bookings %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ booking.tour.title }}</td>
-                    <td>{{ booking.tour_date }}</td>
-                    <td>{{ booking.num_of_people }}</td>
+                    <td>{{ booking.user.username}}</td>
+                    <td>{{ booking.date }}</td>
+                    <td>{{ booking.num_people }}</td>
+                    <td>{{ booking.tour.location }}</td>
+                    <td>{{ booking.tour.adventure_type }}</td>
                     <td>${{ booking.total_price }}</td>
+                    <td>{{ booking.status }} </td>
                 </tr>
                 {% endfor %}
             </tbody>
