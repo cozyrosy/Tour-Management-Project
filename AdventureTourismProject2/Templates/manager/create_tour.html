@@ -3,19 +3,89 @@
 
 {% block content %}
 
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center align-items-center" >
+<div class="container mt-5 mb-5" style="width: 60%">
+    <div class="row justify-content-center align-items-center">
         <div class="row justify-content-center p-4 align-items-center border border-1" style="width: 80%">
-            <h1 class="text-dark text-center">New Booking</h1>
-                <form method="post" enctype="multipart/form-data" style="width: 100%" class="border border-0 col-6 text-dark mt-4 mb-4">
-                    {% csrf_token %}
-                    {{ form.as_p }}
+            <h1 class="text-dark text-center">Create Tour</h1>
+            <form method="post" enctype="multipart/form-data" style="width: 100%" class="col-12 mt-4">
+                {% csrf_token %}
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" name="title" id="title" class="form-control" required>
+                </div>
 
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <select name="location" id="location" class="form-select">
+                        <option value="">Select a location</option>
+                        {% for value, label in location_choices %}
+                            <option value="{{ value }}" {% if data.location == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="adventure_type" class="form-label">Adventure Type</label>
+                    <select name="adventure_type" id="adventure_type" class="form-select">
+                        <option value="">Select an adventure type</option>
+                        {% for value, label in adventure_choices %}
+                            <option value="{{ value }}" {% if data.adventure_type == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" name="price" id="price" class="form-control" required>
+                </div>
+
+                <!-- Start Date -->
+                <div class="mb-3">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control" required>
+                </div>
+
+                <!-- End Date -->
+                <div class="mb-3">
+                    <label for="end_date" class="form-label">End Date</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control" required>
+                </div>
+
+                <!-- Max Group Size -->
+                <div class="mb-3">
+                    <label for="max_group_size" class="form-label">Max Group Size</label>
+                    <input type="number" name="max_group_size" id="max_group_size" class="form-control">
+                </div>
+
+                <!-- Itinerary -->
+                <div class="mb-3">
+                    <label for="itinerary" class="form-label">Itinerary</label>
+                    <textarea name="itinerary" id="itinerary" class="form-control" rows="4"></textarea>
+                </div>
+
+                <!-- Image -->
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" name="image" id="image" class="form-control">
+                </div>
+
+                <!-- Submit -->
+                <div class="text-center">
                     <button type="submit" class="btn btn-primary">Save</button>
-                </form>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 
 {% endblock %}
