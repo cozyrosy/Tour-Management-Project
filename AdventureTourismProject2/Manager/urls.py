@@ -13,6 +13,7 @@ urlpatterns = [
     path('delete_tour/<int:pk>/', views.delete_tour, name='delete_tour'),
     path('tours/<int:tour_id>/book/', views.create_booking, name='create_booking'),
     path('bookings/', views.BookingListView.as_view(), name='booking_list'),
+    path('delete_booking/<int:pk>/', views.delete_booking, name='delete_booking'),
     path('tours/<int:tour_id>/review/', views.create_review, name='create_review'),
 
 ]

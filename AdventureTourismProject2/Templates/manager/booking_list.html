@@ -14,11 +14,12 @@
                     <th scope="col">Tour</th>
                     <th scope="col">User</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Number of People</th>
+                    <th scope="col">No. of People</th>
                     <th scope="col">Location</th>
                     <th scope="col">Type</th>
                     <th scope="col">Total Price</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,14 @@
                     <td>{{ booking.tour.adventure_type }}</td>
                     <td>${{ booking.total_price }}</td>
                     <td>{{ booking.status }} </td>
+                    <td>
+                        <a class="btn btn-primary" href="#">
+                            Edit
+                        </a>
+                        <a class="btn btn-danger" href="{% url 'manager:delete_booking' booking.id %}">
+                            Delete
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
