@@ -1,0 +1,100 @@
+{% extends 'manager/manager_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Add New User</h2>
+
+                        <!-- Django Messages -->
+                        {% if messages %}
+                            <div class="alert alert-warning">
+                                {% for message in messages %}
+                                    <p class="mb-0">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <form action="{% url 'manager:add_user' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="c_fname" class="form-label">First Name:</label>
+                                <input type="text" class="form-control" name="c_fname" id="c_fname" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_lname" class="form-label">Last Name:</label>
+                                <input type="text" class="form-control" name="c_lname" id="c_lname" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" name="c_email" id="c_email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_phone" class="form-label">Phone:</label>
+                                <input type="tel" class="form-control" name="c_phone" id="c_phone" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_password" class="form-label">Password:</label>
+                                <input type="password" class="form-control" name="c_password" id="c_password" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_repassword" class="form-label">Confirm Password:</label>
+                                <input type="password" class="form-control" name="c_repassword" id="c_repassword" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_address" class="form-label">Address:</label>
+                                <textarea class="form-control" name="c_address" id="c_address" rows="4" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="c_image" class="form-label">Upload Profile Picture:</label>
+                                <input type="file" class="form-control" name="c_image" id="c_image" accept="image/*" required>
+                            </div>
+                            <div class="form-check mb-3">
+                              <input type="hidden" name="is_manager" value="false"> <!-- Default value -->
+                              <input class="form-check-input" type="checkbox" name="is_manager" id="is_manager" value="true">
+                              <label class="form-check-label" for="is_manager">
+                                Are you a manager?
+                              </label>
+<!--                              <input type="hidden" name="is_manager_value" id="is_manager_value" value="false">-->
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('is_manager').addEventListener('change', function() {
+            this.value = this.checked ? "true" : "false";
+            console.log("Checkbox value:", this.value);
+        });
+    </script>
+
+<!--    <script>-->
+<!--        const checkbox = document.getElementById('is_manager');-->
+
+<!--        checkbox.addEventListener('click', function() {-->
+<!--            this.value = this.checked ? "true" : "false"-->
+<!--            console.log(this.value);-->
+<!--        });-->
+    </script>
+
+{% endblock %}

@@ -20,7 +20,10 @@ urlpatterns = [
     path('edit_booking/<int:pk>/', views.edit_booking, name='edit_booking'),
     path('delete_booking/<int:pk>/', views.delete_booking, name='delete_booking'),
 
-
+    # URLs for the users CRUDs
+    path('users_list/', views.users_list, name='users_list'),
+    path('add_user/', views.add_user, name='add_user'),
+    path('delete_user/<int:pk>/', views.delete_user, name='delete_user'),
     path('tours/<int:tour_id>/review/', views.create_review, name='create_review'),
 
 ]

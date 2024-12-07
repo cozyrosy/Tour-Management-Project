@@ -1,0 +1,67 @@
+{% extends 'manager/manager_base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">All Users</h1>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+      <a href="{% url 'Manager:add_user' %}">
+          <button class="btn btn-primary me-md-2" type="button">Add New User</button>
+      </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">SNo.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in Users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.first_name }} {{ user.last_name}}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.address }}</td>
+                    {% if user.is_manager %}
+                        <td> Manager </td>
+                    {% else %}
+                        <td>Client</td>
+                    {% endif %}
+
+                    <td>
+                        {% if user.photo %}
+                            <img src="{{ user.photo.url }}" style="width: 50px; height: 50px">
+                        {% else %}
+                            NA
+                        {% endif %}
+                    </td>
+                    <td>
+<!--                        <a class="btn btn-primary" href="#">-->
+<!--                            Edit-->
+<!--                        </a>-->
+                        <a class="btn btn-danger" href="{% url 'manager:delete_user' user.id.id %}">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
