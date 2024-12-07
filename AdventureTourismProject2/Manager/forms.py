@@ -1,11 +1,12 @@
 
 from django import forms
 from .models import Booking, Review, Tour
+from Tour.models import UserBooking
 
 class BookingForm(forms.ModelForm):
     class Meta:
-        model = Booking
-        fields = ['tour_date', 'num_of_people']
+        model = UserBooking
+        fields = ['date', 'num_people', 'status']
 
 class ReviewForm(forms.ModelForm):
     class Meta:

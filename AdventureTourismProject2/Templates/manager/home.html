@@ -1,36 +1,38 @@
 {% extends 'manager/manager_base.html' %}
 {% load static %}
 
+
+{% block content %}
+
 <style>
         /* Full-page background image */
         body {
-           background: url('/media/manager/slider1.jpg') no-repeat center center fixed;
+           background: url('/media/manager/bg.jpg') no-repeat center center fixed;
            background-size: cover;
            color: white;
         }
 
         /* Overlay for better readability */
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+        /*.background_image {*/
+        /*    background-color: rgba(0, 0, 0, 0.6); !* Dark overlay *!*/
+        /*    position: absolute;*/
+        /*    top: 0;*/
+        /*    bottom: 0;*/
+        /*    left: 0;*/
+        /*    right: 0;*/
+        /*}*/
 
-        /* Centered content with padding */
-        .content-wrapper {
-            position: relative;
-            z-index: 2;
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
+        /*!* Centered content with padding *!*/
+        /*.background_image {*/
+        /*    position: relative;*/
+        /*    z-index: 2;*/
+        /*    padding-top: 60px;*/
+        /*    padding-bottom: 40px;*/
+        /*}*/
 </style>
-{% block content %}
 
     <!-- Main Content -->
-    <div class="content-wrapper container my-5">
+    <div class="background_image content-wrapper bg-wrapper container p-0" style="width: 100%">
         <!-- Header -->
         <header class="text-center py-4">
             <h1 class="display-4">Manager</h1>
@@ -41,5 +43,8 @@
             <p>Select an option above to manage bookings, tours, and reviews.</p>
         </div>
     </div>
-
+{% include 'manager/footer.html' %}
 {% endblock %}
+
+<!-- Include Footer -->
+

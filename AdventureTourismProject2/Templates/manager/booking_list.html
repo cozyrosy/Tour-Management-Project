@@ -35,7 +35,7 @@
                     <td>${{ booking.total_price }}</td>
                     <td>{{ booking.status }} </td>
                     <td>
-                        <a class="btn btn-primary" href="#">
+                        <a class="btn btn-primary" href="{% url 'manager:edit_booking' booking.id %}">
                             Edit
                         </a>
                         <a class="btn btn-danger" href="{% url 'manager:delete_booking' booking.id %}">
