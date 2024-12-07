@@ -177,3 +177,51 @@ def delete_booking(request, pk):
     booking = get_object_or_404(UserBooking, pk=pk)
     booking.delete()
     return redirect('manager:booking_list')
+
+@login_required
+def users_list(request):
+    Users = ClientDetails.objects.all()
+    return render(request, 'manager/users_list.html', {'Users': Users})
+
+@login_required
+def add_user(request):
+    try:
+        import pdb; pdb.set_trace()
+        if request.method=='POST':
+            f_name = request.POST.get('c_fname')
+            l_name = request.POST.get('c_lname')
+            mail = request.POST.get('c_email')
+            contact = request.POST.get('c_phone')
+            password = request.POST.get('c_password')
+            cpassword = request.POST.get('c_repassword')
+            address = request.POST.get('c_address')
+            photo = request.FILES.get('c_image')
+            is_manager = request.POST.get('is_manager', 'false')
+
+            if password==cpassword:
+                if User.objects.filter(username=mail).exists():
+                    messages.info(request,'email already exists')
+
+                else:
+                    user=User.objects.create_user(username=mail,password=password)
+                    customer=ClientDetails(id=user,first_name=f_name,last_name=l_name,phone=contact,
+                                            email=mail,address=address, photo=photo)
+                    if is_manager=='true':
+                        customer.is_manager=True
+
+                    user.save()
+                    customer.save()
+                    return redirect('manager:users_list')
+            else:
+                messages.info(request,'password mismatch')
+        return render(request, 'manager/add_user.html', {})
+    except Exception as e:
+        return render(request, 'manager/add_user.html', {})
+
+
+@login_required
+def delete_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    client_user = get_object_or_404(ClientDetails, id=user)
+    client_user.delete()
+    return redirect('manager:users_list')
