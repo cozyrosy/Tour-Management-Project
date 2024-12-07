@@ -2,14 +2,15 @@
 {% load static %}
 
 {% block content %}
+
 <div class="container mt-5">
     <!-- Heading -->
     <div class="text-center mb-5">
-        <h1 class="display-4">Book {{ tour.title }}</h1>
-        <p class="text-muted">Complete the form below to confirm your booking.</p>
+        <h1 class="display-4">Edit Booking for {{ booking.tour.title }}</h1>
+        <p class="text-muted">Update the booking details below.</p>
     </div>
 
-    <!-- Booking Form Card -->
+    <!-- Booking Edit Form Card -->
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="card shadow-sm border-0">
@@ -17,13 +18,12 @@
                     <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
 
-                        <!-- User (Read-only) -->
+                        <!-- User Dropdown -->
                         <div class="mb-3">
                             <label for="user" class="form-label">User</label>
                             <select name="user" id="user" class="form-control" required>
-                                <option value="">Select an user</option>
                                 {% for user in users %}
-                                <option value="{{ user.id }}" {% if user.id == request.user.id %}selected{% endif %}>
+                                <option value="{{ user.id.username }}" {% if user.id.username == booking.user.username %}selected{% endif %}>
                                     {{ user.first_name }} {{ user.last_name }}
                                 </option>
                                 {% endfor %}
@@ -33,28 +33,30 @@
                         <!-- Date -->
                         <div class="mb-3">
                             <label for="date" class="form-label">Booking Date</label>
-                            <input type="date" name="date" id="date" class="form-control" required>
+                            <input type="date" name="date" id="date" class="form-control" value="{{ booking.date|date:"Y-m-d" }}" required>
                         </div>
 
                         <!-- Number of People -->
                         <div class="mb-3">
                             <label for="num_people" class="form-label">Number of People</label>
-                            <input type="number" name="num_people" id="num_people" class="form-control" min="1" required>
+                            <input type="number" name="num_people" id="num_people" class="form-control" value="{{ booking.num_people }}" min="1" required>
                         </div>
 
-                        <!-- Status -->
+                        <!-- Status Dropdown -->
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select name="status" id="status" class="form-control" required>
                                 {% for key, value in status_choices %}
-                                <option value="{{ key }}">{{ value }}</option>
+                                <option value="{{ key }}" {% if key == booking.status %}selected{% endif %}>
+                                    {{ value }}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
 
                         <!-- Confirm Button -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">Confirm Booking</button>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Save Changes</button>
                         </div>
                     </form>
                 </div>

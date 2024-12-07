@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from django.views.generic import ListView, CreateView, UpdateView
 from .models import Tour, Booking, Review
 from .forms import BookingForm, ReviewForm, CreateTourForm
@@ -6,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from Tour.models import UserBooking
+
+from user.models import ClientDetails
+
+
 #from Tour import tour_list
 
 
@@ -15,31 +20,6 @@ from Tour.models import UserBooking
 @login_required
 def manager_home(request):
     return render(request, 'manager/home.html')
-
-class BookingListView(ListView):
-    model = UserBooking
-    template_name = 'manager/booking_list.html'
-    context_object_name = 'bookings'
-
-    def get_queryset(self):
-        return UserBooking.objects.all()
-
-# Booking Create View
-@login_required
-def create_booking(request, tour_id):
-    tour = get_object_or_404(Tour, id=tour_id)
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            booking = form.save(commit=False)
-            booking.user = request.user
-            booking.tour = tour
-            booking.total_price = booking.num_of_people * tour.price
-            booking.save()
-            return redirect('manager:booking_list')
-    else:
-        form = BookingForm()
-    return render(request, 'manager/booking_form.html', {'form': form, 'tour': tour})
 
 # Review Create View
 @login_required
@@ -137,6 +117,60 @@ def delete_tour(request, pk):
     tour = get_object_or_404(Tour, pk=pk)
     tour.delete()
     return redirect('manager:tour_list')
+
+class BookingListView(ListView):
+    model = UserBooking
+    template_name = 'manager/booking_list.html'
+    context_object_name = 'bookings'
+
+    def get_queryset(self):
+        return UserBooking.objects.all()
+
+# Booking Create View
+@login_required
+def create_booking(request, tour_id):
+    tour = get_object_or_404(Tour, id=tour_id)
+    status_choices = UserBooking._meta.get_field('status').choices
+    users = ClientDetails.objects.filter(is_manager=False)
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        user = ClientDetails.objects.get(email=request.POST.get('user'))
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = user.id
+            booking.tour = tour
+            booking.total_price = booking.calculate_total_price()
+            booking.save()
+            return redirect('manager:booking_list')
+    else:
+        form = BookingForm()
+    return render(request, 'manager/booking_form.html', {
+        'form': form, 'tour': tour, 'users':users, 'status_choices': status_choices
+    })
+
+@login_required
+def edit_booking(request, pk):
+    booking = get_object_or_404(UserBooking, id=pk)
+    status_choices = UserBooking._meta.get_field('status').choices  # Fetch status choices dynamically
+    users = ClientDetails.objects.filter(is_manager=False) # Fetch all users
+
+    if request.method == 'POST':
+        user = User.objects.get(username=request.POST['user'])
+        # Update booking data with POST values
+        booking.user = user  # Get selected user
+        booking.date = request.POST['date']
+        booking.num_people = request.POST['num_people']
+        booking.status = request.POST['status']
+        booking.total_price = int(booking.num_people) * booking.tour.price  # Recalculate total price
+        booking.save()
+
+        return redirect('manager:booking_list')
+
+    return render(request, 'manager/edit_booking.html', {
+        'booking': booking,
+        'users': users,
+        'status_choices': status_choices,
+    })
 
 @login_required
 def delete_booking(request, pk):
