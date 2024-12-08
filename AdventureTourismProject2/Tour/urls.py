@@ -22,4 +22,7 @@ urlpatterns=[
     #path('bookings/<int:pk>/update/', views.user_booking_update, name='user_booking_update'),
     path('save_payment/', views.save_payment, name='save_payment'),
 
+    path('blogs/', views.blogs, name='blogs'),
+    path('blog_detail/<int:blog_id>/', views.blog_detail, name='blog_detail'),
+
 ]

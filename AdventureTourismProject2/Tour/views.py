@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from Manager.models import Tour
+from Manager.models import Tour, Blog
 from .forms import UserBookingForm
 from .models import UserBooking
 from django.contrib.auth.decorators import login_required
@@ -136,9 +136,13 @@ def user_bookings(request):
 
     return render(request, 'tour/user_bookings.html', {'user_bookings': user_bookings})
 
+def blogs(request):
+    blogs = Blog.objects.all().order_by('created_at')
+    return render(request, 'tour/blogs_list.html', {'blogs': blogs})
 
-
-
+def blog_detail(request, blog_id):
+    blog = get_object_or_404(Blog, pk=blog_id)
+    return render(request, 'tour/blog_detail.html', {'blog': blog})
 
 
 import razorpay
