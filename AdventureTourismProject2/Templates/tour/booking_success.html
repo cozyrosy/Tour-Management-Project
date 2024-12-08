@@ -20,7 +20,7 @@
         <h2 class="text-center mt-5">Booking Confirmed!</h2>
         <div class="text-center mt-4">
             <p>Your booking has been successfully confirmed. Thank you for booking with us!</p>
-            <a href="{% url 'Tour:tour_list' %}" class="btn btn-primary">Back to Tours</a>
+            <a href="{% url 'Tour:user_bookings' %}" class="btn btn-primary">View booking</a>
         </div>
 
         {% if user_bookings %}
