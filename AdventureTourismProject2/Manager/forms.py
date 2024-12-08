@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Booking, Review, Tour
+from .models import Booking, Blog, Review, Tour
 from Tour.models import UserBooking
 
 class BookingForm(forms.ModelForm):
@@ -18,3 +18,4 @@ class CreateTourForm(forms.ModelForm):
         model = Tour
         fields = ['title', 'description', 'location', 'adventure_type', 'price', 'start_date',
                   'end_date', 'max_group_size', 'itinerary', 'image']
+

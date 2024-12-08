@@ -70,4 +70,18 @@ class Review(models.Model):
         return f"Review by {self.user.username} for {self.tour.title} - {self.rating} Stars"
 
 
+class Blog(models.Model):
+    """
+    Basic model to store blog posts.
+    """
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='media/manager/', blank=True, null=True)
+    content = models.TextField(null=True, blank=True)
+    author_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
 
