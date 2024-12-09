@@ -16,15 +16,16 @@ def home(request):
 def Register(request):
     try:
         if request.method=='POST':
-            f_name=request.POST['c_fname']
+            f_name = request.POST['c_fname']
             l_name = request.POST['c_lname']
             mail = request.POST['c_email']
             contact = request.POST['c_phone']
             password = request.POST['c_password']
             cpassword = request.POST['c_repassword']
             address = request.POST['c_address']
-            photo = request.FILES['c_image']
-            is_manager = request.POST['is_manager']
+            photo = request.FILES.get('c_image')
+            is_manager = request.POST.get('is_manager', 'false')
+            import pdb; pdb.set_trace()
 
             if password==cpassword:
                 if User.objects.filter(username=mail).exists():
@@ -44,7 +45,9 @@ def Register(request):
                 messages.info(request,'password mismatch')
         return render(request,'user/Register.html')
     except Exception as e:
-        return render(request,'user/Register.html',{'error':e})
+        print(f"Exception occurred: {e}")
+        messages.error(request, "An unexpected error occurred.")
+        return render(request, 'user/Register.html')
 
 def Login(request):
 
