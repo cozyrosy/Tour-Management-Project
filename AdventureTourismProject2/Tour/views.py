@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.conf import settings  # Add this import statement
 
 
 # Create your views here.
@@ -28,9 +29,6 @@ def tour_list(request):
 def user_booking_list(request):
     bookings = UserBooking.objects.filter(user=request.user)
     return render(request, 'tour/user_booking_list.html', {'bookings': bookings})
-
-
-
 
 def tour_detail(request, tour_id):
     """
@@ -78,45 +76,46 @@ def send_booking_confirmation_email(user, tour, booking):
         fail_silently=False,
     )
 
+from django.http import JsonResponse
+
 @login_required
 def new_booking(request, tour_id):
     tour = get_object_or_404(Tour, pk=tour_id)
+    user = get_object_or_404(User, username=request.user)
 
     if request.method == "POST":
-        print("Inside post call-------------")
-        import pdb; pdb.set_trace()
         form = UserBookingForm(request.POST)
-        user = get_object_or_404(User, username=request.user)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.tour = tour  # Assign the selected tour
             booking.user = user  # Assign the current user
             booking.status = 'Confirmed'
-            booking.save()  # This will automatically calculate and save total_price
+            booking.save()  # Save the booking
 
-            # import razorpay
-            #
-            # client = razorpay.Client(auth=("rzp_test_MaZALIAlQxBkWW", "fOqLYmAxLp8aYlN8xYOrMQNO"))
-            # DATA = {
-            #     "amount": 5000,  # Amount in paise
-            #     "currency": "INR",
-            #     "payment_capture": 1,
-            # }
-            #
-            # payment = client.order.create(data=DATA)
-            #
-            # send_booking_confirmation_email(user, tour, booking)
-            return redirect('Tour:booking_success')  # Use the correct namespace
+            # Send confirmation email
+            # try:
+            #     send_booking_confirmation_email(user, tour, booking)
+            # except Exception as e:
+            #     # Log the error (optional)
+            #     print(f"Failed to send confirmation email: {e}")
+
+            # Handle AJAX requests
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"success": True, "message": "Booking saved successfully", "id": booking.id})
+
+            # Standard form submission
+            return redirect('Tour:booking_success')
+
+        else:
+            # Handle AJAX requests for invalid form
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"success": False, "errors": form.errors}, status=400)
+
+    # Handle GET request
     else:
-        print("Outside post call-------------")
         form = UserBookingForm()
-        return render(request, 'tour/create_booking.html', {'form': form, 'tour': tour})
 
-# def booking_form(request, tour_id):
-#     if request.method == "GET":
-#         tour = get_object_or_404(Tour, pk=tour_id)
-#         form = UserBookingForm()
-#         return render(request, 'tour/create_booking.html', {'form': form, 'tour': tour})
+    return render(request, 'tour/create_booking.html', {'form': form, 'tour': tour, 'user': user})
 
 @login_required
 def booking_success(request):
@@ -143,45 +142,3 @@ def blogs(request):
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     return render(request, 'tour/blog_detail.html', {'blog': blog})
-
-
-import razorpay
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-# from .models import Payment  # Assume you have a Payment model
-from django.conf import settings
-import json
-
-@csrf_exempt
-def save_payment(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            order_id = data.get('order_id')
-            payment_id = data.get('payment_id')
-            signature = data.get('signature')
-            amount = data.get('amount')
-
-            # Verify the payment signature
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-            try:
-                client.utility.verify_payment_signature({
-                    'razorpay_order_id': order_id,
-                    'razorpay_payment_id': payment_id,
-                    'razorpay_signature': signature
-                })
-
-                # Save payment details in the database
-                Blog.objects.create(
-                    title="order_id",
-                )
-
-                return JsonResponse({"message": "Payment saved successfully"}, status=201)
-
-            except razorpay.errors.SignatureVerificationError:
-                return JsonResponse({"error": "Invalid payment signature"}, status=400)
-
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Invalid request"}, status=400)

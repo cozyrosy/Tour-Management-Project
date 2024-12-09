@@ -18,57 +18,71 @@
                     <button id="rzp-button1" type="submit" class="btn btn-primary">Pay Now</button>
 
                     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <script>
+                    document.getElementById('booking-form').onsubmit = async function (e) {
+                        e.preventDefault(); // Prevent default form submission
 
-                    <script>
-                        var options = {
-                            "key": "rzp_test_MaZALIAlQxBkWW", // Your Razorpay test key
-                            "amount": 50000, // Amount in paise
-                            "currency": "INR",
-                            "name": "Adventure Tourism",
-                            "description": "Payment for booking",
-                            "image": "https://example.com/your_logo.jpg", // Optional
-                            "handler": async function(response) {
-                                const saveResponse = await fetch('save-payment/', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        order_id: "123",
-                                        payment_id: "123",
-                                        signature: "qqw",
-                                        amount: 10 // Pass additional data if needed
-                                    })
-                                });
-                                const _response = await fetch("new_booking/7/", {
-                                  method: "POST",
-                                  headers:{
-                                      "Content-Type": "application/json",
-                                      "X-CSRFToken": csrfToken
-                                  }
-                                });
+                        // Collect form data
+                        let formData = new FormData(this);
 
-                                const result = _response.json()
+                        try {
+                            // Send an AJAX request to save the data
+                            let response = await fetch('{% url "Tour:new_booking" tour.id %}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}', // Include CSRF token
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                },
+                                body: formData,
+                            });
 
-                                console.log('Result:', result)
+                            if (response.ok) {
+                                let data = await response.json();
 
-                                // Redirect or show success message
-                                // alert("Payment successful!");
-                                // window.location.href = "{% url 'Tour:user_bookings' %}";  // Redirect after success
-                            },
-                            "theme": {
-                                "color": "#F37254"
-                            },
-                            "prefill": {
-                                "name": "Your Name",
-                                "email": "your.email@example.com"
+                                // If data is successfully saved, open Razorpay popup
+                                if (data.success) {
+                                    // Define Razorpay options
+                                    var options = {
+                                        "key": "rzp_test_tc4Q7CerfehU2p",
+                                        "amount": 500 * 100, // Amount in paise
+                                        "currency": "INR",
+                                        "name": "{{ user.username }}",
+                                        "description": "Shopping",
+                                        "image": "https://example.com/your_logo",
+                                        "handler": function (response) {
+                                            // alert(response.razorpay_payment_id);
+                                            alert("Payment successful!");
+                                            window.location.href = "{% url 'Tour:user_bookings' %}";
+                                            // alert(response.razorpay_signature);
+
+                                            // Optionally send Razorpay response to the server
+                                        },
+                                        "theme": {
+                                            "color": "#3399cc"
+                                        }
+                                    };
+
+                                    var rzp1 = new Razorpay(options);
+                                    rzp1.on('payment.failed', function (response) {
+                                        alert(response.error.code);
+                                        alert(response.error.description);
+                                    });
+
+                                    rzp1.open();
+                                } else {
+                                    alert("Failed to save booking data. Please try again.");
+                                }
+                            } else {
+                                alert("Server error occurred. Please try again later.");
                             }
-                        };
+                        } catch (error) {
+                            console.error("Error:", error);
+                            alert("An unexpected error occurred.");
+                        }
+                    };
+                </script>
 
-                        var rzp1 = new Razorpay(options);
-                        document.getElementById('rzp-button1').onclick = function(e) {
-                            rzp1.open();
-                            e.preventDefault();
-                        };
-                    </script>
+
                 </form>
 
 

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,11 +127,11 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'Media')
 MEDIA_URL='/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider's SMTP server
+EMAIL_HOST = 'smtp.mailinator.com'  # Use your email provider's SMTP server
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'gracejacob.rose@gmail.com'
-EMAIL_HOST_PASSWORD = 'your_email_password'  # Use an app password if using Gmail
+EMAIL_HOST_USER = 'rose@mailinator.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use an app password if using Gmail
 
 
 # Default primary key field type
